@@ -1,0 +1,153 @@
+{% comment %} <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>History Page</title>
+  </head>
+  <body>
+    <form action="/history/" method="post">
+      {% csrf_token %}
+      <label for="location">Region:</label>
+      <select id="location" name="location">
+        <option disabled selected value> -- select an option -- </option>
+        {% for i in regions %}
+        <option value="{{i.name}}">{{i.name}}</option>
+
+        {% endfor %}
+      </select>
+      <label for="day">Day:</label>
+      <select name="day" id="day">
+        <option disabled selected value> -- select an option -- </option>
+        <option value="Monday">Monday</option>
+        <option value="Tuesday">Tuesday</option>
+        <option value="Wednesday">Wednesday</option>
+        <option value="Thursday">Thursday</option>
+        <option value="Friday">Friday</option>
+        <option value="Saturday">Saturday</option>
+        <option value="Sunday">Thursday</option>
+      </select>
+      <input type="submit" value="Submit" />
+      <a href="/">Back to Home</a>
+
+      <table>
+        {% if tickets %}
+            <tr>
+                <th>Street Address</th>
+                <th>Date</th>
+                <th>Time</th>
+            </tr>
+            {% for ticket in tickets %}
+            <tr>
+                <td>{{ ticket.address }}</td>
+                <td>{{ ticket.time|date:"m/d/Y" }}</td>
+                <td>{{ ticket.time|time:"H:i" }}</td>
+            </tr>
+        {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="3">Please select the filter.</td>
+            </tr>
+        {% endif %}
+    </table>
+
+    
+</body>
+</html>
+
+
+
+    </form>
+</body>
+</html> {% endcomment %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <style>
+    body {
+      font-family: monospace;
+      color: red;
+    }
+    .container {
+      max-width: 320px;
+      margin: 0 auto; /* Center the container */
+      position: relative;
+    }
+    /* Add some padding for the table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #000;
+      padding: 8px;
+    }
+    /* Style the "Back to Home" link */
+    .back-to-home-link {
+      position: fixed;
+      top: auto;
+      right: 10px;
+      z-index: 1; /* Ensure it's above the container */
+    }
+  </style>
+  <title>History Page</title>
+</head>
+<body>
+  <div class="container">
+    <a href="/" class="back-to-home-link">Back to Home</a>
+    <h1>History Page</h1>
+    <form action="/history/" method="post">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="location">Region:</label>
+        <select id="location" name="location" class="form-control">
+          <option disabled selected value> -- Select an option -- </option>
+          {% for i in regions %}
+          <option value="{{ i.name }}">{{ i.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <label for "day">Day:</label>
+        <select name="day" id="day" class="form-control">
+          <option disabled selected value> -- Select an option -- </option>
+          <option value="Monday">Monday</option>
+          <option value="Tuesday">Tuesday</option>
+          <option value="Wednesday">Wednesday</option>
+          <option value="Thursday">Thursday</option>
+          <option value="Friday">Friday</option>
+          <option value="Saturday">Saturday</option>
+          <option value="Sunday">Sunday</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    <table>
+      {% if tickets %}
+        <tr>
+          <th>Street Address</th>
+          <th>Date</th>
+          <th>Time</th>
+        </tr>
+        {% for ticket in tickets %}
+          <tr>
+            <td>{{ ticket.address }}</td>
+            <td>{{ ticket.time|date:"m/d/Y" }}</td>
+            <td>{{ ticket.time|time:"H:i" }}</td>
+          </tr>
+        {% endfor %}
+      {% else %}
+        <tr>
+          <td colspan="3">Please select the filter.</td>
+        </tr>
+      {% endif %}
+    </table>
+  </div>
+</body>
+</html>
+
+

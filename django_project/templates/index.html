@@ -1,0 +1,76 @@
+{% comment %} <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <title>Parking ticket entry</title>
+  </head>
+  <body>
+    <form action="/" method="post">
+      {% csrf_token %}
+      <label for="datetime">Enter Date & time:</label>
+      <input type="datetime-local" id="datetime" name="geetha" />
+      <label for="StreetAddress">StreetAddress:</label>
+      <input type="text" id="StreetAddress" name="StreetAddress" />
+      <label for="location">Region:</label>
+      <select id="location" name="location">
+        <option disabled selected value> -- select an option -- </option>
+        {% for i in regions %}
+        <option value="{{i.name}}">{{i.name}}</option>
+
+        {% endfor %}
+      </select>
+      <input type="submit" value="Submit" />
+      <a href="history/">History Page</a>.
+
+    </form>
+  </body>
+</html> {% endcomment %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <style>
+    body {
+      font-family: monospace;
+      color: red;
+    }
+    .container {
+      max-width: 320px;
+      margin: 0 auto; /* Center the container */
+    }
+  </style>
+  <title>Parking Ticket Entry</title>
+</head>
+<body>
+  <div class="container">
+    <form action="/" method="post" class="mt-4">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="datetime">Enter Date & Time:</label>
+        <input type="datetime-local" id="datetime" name="geetha" class="form-control" />
+      </div>
+      <div class="form-group">
+        <label for="StreetAddress">Street Address:</label>
+        <input type="text" id="StreetAddress" name="StreetAddress" class="form-control" />
+      </div>
+      <div class="form-group">
+        <label for="location">Region:</label>
+        <select id="location" name="location" class="form-control">
+          <option disabled selected value> -- Select an option -- </option>
+          {% for i in regions %}
+          <option value="{{ i.name }}">{{ i.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+      <a href="history/" style="display : above">History Page</a>
+    </form>
+  </div>
+</body>
+</html>
+
