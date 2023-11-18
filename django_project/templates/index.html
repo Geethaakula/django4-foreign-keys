@@ -50,7 +50,7 @@
   <div class="container">
     <form action="/" method="post" class="mt-4">
       {% csrf_token %}
-      <div class="form-group">
+      {% comment %} <div class="form-group">
         <label for="datetime">Enter Date & Time:</label>
         <input type="datetime-local" id="datetime" name="geetha" class="form-control" />
       </div>
@@ -66,7 +66,8 @@
           <option value="{{ i.name }}">{{ i.name }}</option>
           {% endfor %}
         </select>
-      </div>
+      </div> {% endcomment %}
+      {{ form }}
       <button type="submit" class="btn btn-primary">Submit</button>
       <a href="history/" style="display : above">History Page</a>
     </form>
