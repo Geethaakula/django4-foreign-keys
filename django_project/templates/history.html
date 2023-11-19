@@ -102,7 +102,7 @@
     <h1>History Page</h1>
     <form action="/history/" method="post">
       {% csrf_token %}
-      <div class="form-group">
+      {% comment %} <div class="form-group">
         <label for="location">Region:</label>
         <select id="location" name="location" class="form-control">
           <option disabled selected value> -- Select an option -- </option>
@@ -123,7 +123,8 @@
           <option value="Saturday">Saturday</option>
           <option value="Sunday">Sunday</option>
         </select>
-      </div>
+      </div> {% endcomment %}
+      {{form}}
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
     <table>
