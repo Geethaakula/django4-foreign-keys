@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}Other's Gifts{% endblock %}
+
+{% block content %}
+    <h4>Gifts for {{ username }}</h4>
+    <ul id="dynamic-list">
+        {% for gift in gifts %}
+            <li>{{ gift.gift }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

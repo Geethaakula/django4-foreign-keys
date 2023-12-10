@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Gifts{% endblock %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit">Add Item</button>
+    </form>
+
+    <ul id="dynamic-list">
+        {% for gift in gifts %}
+            <li>{{ gift.gift }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

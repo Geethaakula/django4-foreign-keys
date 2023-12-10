@@ -1,14 +1,18 @@
 from django.db import models
+from django.forms import ModelForm
 
-class Region(models.Model):
-  name = models.CharField(max_length=20)
-  def __str__(self):
-    return self.name
 
-class Input(models.Model):
-  time = models.DateTimeField()
-  address = models.CharField(max_length=45)
-  region = models.ForeignKey(Region,on_delete=models.CASCADE)
-  day = models.CharField(max_length=15)
+
+class User(models.Model):
+  email = models.EmailField(max_length = 254,blank=True,unique = True)
+  username = models.CharField(max_length=45,unique = True)
+  password = models.CharField(max_length=32)
+  
   def __str__(self):
-    return str(self.time) + self.address + str(self.region) + str(self.day)
+    return self.email + self.username + self.password 
+  
+class Gifts(models.Model):
+  gift = models.CharField(max_length=32)
+  username = models.ForeignKey(User,on_delete=models.CASCADE)
+  def __str__(self):
+    return self.gift 

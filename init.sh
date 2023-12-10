@@ -1,0 +1,4 @@
+poetry shell
+export SECRET_KEY=h0un_rQeyvTJvii6u-hzpcHARqVWfNhloTh7Xsk5nps KtU1aAXWWrsCE0CPNO55eiJ_MMr_uHb3JOqcHvNcNO0
+poetry run python  manage.py runserver
+poetry install
