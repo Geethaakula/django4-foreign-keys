@@ -3,13 +3,20 @@
 {% block title %}Users{% endblock %}
 
 {% block content %}
-  <form method="post">
+  <h4 class="mb-3">View gifts list of other users</h4>
+  <form method="post" class="d-flex">
     {% csrf_token %}
-    <select name="selected_user">
-        {% for username in usernames %}
-            <option value="{{ username.username }}">{{ username.username }}</option>
-        {% endfor %}
-    </select>
-    <button type="submit">Submit</button>
+    <div class="input-group w-auto">
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="inputGroupSelect01">Users</label>
+      </div>
+      <select style="width:150px;" class="custom-select" name="selected_user" id="inputGroupSelect01">
+        <option disabled selected value> -- Select a user -- </option>
+          {% for username in usernames %}
+              <option value="{{ username.username }}">{{ username.username }}</option>
+          {% endfor %}
+      </select>
+    </div>
+    <input style="margin-left:1rem;" class="btn btn-primary" value="View Gifts" type="submit"></input>
   </form>
 {% endblock %}

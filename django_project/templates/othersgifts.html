@@ -3,10 +3,15 @@
 {% block title %}Other's Gifts{% endblock %}
 
 {% block content %}
-    <h4>Gifts for {{ username }}</h4>
+    <h4 class="my-4">Gifts for {{ username }}</h4>
+    {% if gifts|length != 0 %}
     <ul id="dynamic-list">
         {% for gift in gifts %}
             <li>{{ gift.gift }}</li>
         {% endfor %}
     </ul>
+    {% else %}
+    No gifts for the selected user
+    {% endif %}
+
 {% endblock %}

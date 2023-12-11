@@ -3,13 +3,29 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-    <form action="/" method="post" class="mt-4">
-      {% csrf_token %}  
-      <p style="text:red;">{{ error }}</p>
-      {{ form }}
-      <button type="submit" class="btn btn-primary">Submit</button>
-      <a href="/register" style="display : above">Signup</a>
-      
-      
-    </form>
+    
+  <div class="d-flex p-4">
+    <div class="col-12 col-lg-8 d-flex align-items-center ">
+      <h1 class="d-block ml-4">
+        Welcome to Gifter!
+      </h1>
+    </div>
+    {% if not user.is_authenticated %}
+    <div class="card col-12 col-lg-4 p-4">
+      <h2 class="text-center">Login</h2>
+      <form class="d-flex flex-column" action="/" method="post" class="mt-4">
+        {% csrf_token %}  
+        <p style="text:red;">{{ error }}</p>
+        
+        
+          {{ form }}
+          <button type="submit" class="btn btn-primary mt-4">Submit</button>
+          {{ errors }}
+          <p class="text-center mt-2">
+            Do not have an account? <a href="/register" style="display : above">Signup</a>
+          </p>
+        </form>
+      </div>
+    {% endif %}
+  </div>
 {% endblock %}

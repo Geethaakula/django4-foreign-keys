@@ -1,14 +1,29 @@
 {% extends "base.html" %}
 
+{% block styles %}
+    .helptext {
+      color: gray;
+      font-size: 14px;
+      padding: 0.5rem;
+    }
+{% endblock %}
+
 {% block title %}Register{% endblock %}
 
 {% block content %}
-  <a href="/" class="back-to-home-link">Back to Home</a>
-  <h1>Signup Page</h1>
-  <form action="/register/" method="post">
-    {% csrf_token %}
-    
-    {{form}}
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </form>
+  <div class="d-flex p-4">
+    <div class="card col-12 col-lg-4 p-4">
+      <h2 class="text-center">Register</h2>
+      <form class="d-flex flex-column" action="/register/" method="post">
+        {% csrf_token %}
+        
+        {{form}}
+        <button type="submit" class="btn btn-primary">Create an account</button>
+        {{ errors }}
+      </form>
+      <p class="text-center mt-2">
+        Already a user? <a href="/" class="back-to-home-link">login</a>
+      </p>
+    </div>
+  <div>
 {% endblock %}

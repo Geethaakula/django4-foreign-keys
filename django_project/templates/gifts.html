@@ -1,17 +1,31 @@
 {% extends "base.html" %}
 
+{% block styles %}
+    input#id_gift {
+        margin-left: 1rem;
+    }
+{% endblock %}
+
 {% block title %}Gifts{% endblock %}
 
 {% block content %}
-    <form method="post">
+    <h4 class="my-4">Gifts for current user ({{ user.username }})</h4>
+    <form class="d-flex align-items-center" method="post">
         {% csrf_token %}
         {{ form }}
-        <button type="submit">Add Item</button>
+        <button style="margin-left:1rem;" class="btn btn-primary" type="submit">Add Item</button>
     </form>
 
-    <ul id="dynamic-list">
-        {% for gift in gifts %}
-            <li>{{ gift.gift }}</li>
-        {% endfor %}
-    </ul>
+    <div class="mt-4">
+        <h5>List of gifts</h5>
+        {% if gifts|length != 0 %}
+            <ol id="dynamic-list">
+                {% for gift in gifts %}
+                    <li>{{ gift.gift }}</li>
+                {% endfor %}
+            </ol>
+        {% else %}
+            No gifts for the selected user, add gifts to continue.
+        {% endif %}
+    </div>
 {% endblock %}

@@ -1,84 +1,78 @@
 from django.shortcuts import render, redirect
-from .forms import RegisterForm,LoginForm,GiftsForm
+from .forms import GiftsForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth import login, logout, authenticate
 from django.db.models import Q
 from django.views import View
-from .models import User, Gifts
+from django.contrib.auth.models import User
+from .models import Gifts
 
 
 
 class Home(View):
 	def get(self, request):
-		return render(request,'index.html',{'form':LoginForm()})
+		form = AuthenticationForm()
+		return render(request,'index.html',{'form':form})
 	def post(self, request):
-		# FIXME: do not clear the forms on incorrect usernames and passwords
-		form = LoginForm(request.POST)
-		# check if the username exists in the databse
-		username = request.POST["username"]
-		currentUser = list(User.objects.filter(username=username))
-		if(len(currentUser) == 0):
-			#user doesn't exist, throw an error
-			return render(request, 'index.html',{'form': LoginForm(), "error": "username does not exist"})
-		else:
-			# user exists
-			print("inside else")
-			password = request.POST["password"]
-			currentPass = currentUser[0].password
-			# if yes, then check if the password is valid 
-			if(currentPass == password):
-				# password is correct, save username to session storage
-				print("password is correct")
-				request.session['currentUser'] = request.POST["username"]
-				request.session.save()
+		form = AuthenticationForm(request, request.POST)
+		if form.is_valid():
+			username = form.cleaned_data.get('username')
+			password = form.cleaned_data.get('password')
+			user = authenticate(username=username, password=password)
+			if(user is not None):
+				login(request, user)
 				return redirect("/users/")
-			else:
-				# password is incorrect
-				print("inside else of if")
-				new_form_values = request.POST.copy()
-				new_form_values.update({"password":""})
-				form = LoginForm(new_form_values)
-				#remove password values from that
-				return render(request, 'index.html',{'form': form, "error": "password is incorrect"})
-	
+		else:
+			print(form.errors)
+			return render(request,'index.html',{'form':form, "errors": form.errors})
+		
+
 class Signup(View):
 	def get(self,request):
-		return render(request, 'register.html', {'form':RegisterForm()})
+		return render(request, 'register.html', {'form':UserCreationForm()})
 	
 	def post(self, request):
-		#TODO:  hash the password
-		form = RegisterForm(request.POST)
-		print(request.POST)
+		
+		form = UserCreationForm(request.POST)
 		if form.is_valid():
 			form.save()
+			username = form.cleaned_data.get('username')
+			password = form.cleaned_data.get('password1')
+			user = authenticate(username=username, password=password)
+			if(user is not None):
+				login(request, user)
+				return redirect('/')
+		else:
+			form = UserCreationForm()
 		
-		return redirect("/")
-		# return render(request, 'register.html',{'form':RegisterForm()})
+		return render(request, 'register.html', {'form': form})
 	
 class UsersList(View):
 	def get(self,request):
-		currentUser = request.session.get("currentUser")
-		usernames = list(User.objects.filter(~Q(username=currentUser)))
+		usernames = list(User.objects.filter(~Q(username=request.user.username)).filter(~Q(username="admin")))
 		print(usernames)
 		return render(request, 'users.html',{"usernames":usernames})
 	def post(self, request):
-		#TODO: render the gifts page containing the gifts of the selected user
 		user = request.POST["selected_user"]
 		return redirect(f"/othersgifts/{user}")
 	
 class Gift(View):
 	def get(self,request):
 		form = GiftsForm()
-		gifts1 = Gifts.objects.all()
+		gifts1 = Gifts.objects.filter(username=request.user)
 		print(gifts1)
-			
 		return render(request, 'gifts.html', {'form': form, 'gifts': gifts1})
-		# return render(request, 'gifts.html', {"form":GiftsForm()})
+		
 	def post(self, request):
-		form = GiftsForm(request.POST)
-		gifts1 = Gifts.objects.all()
-		# TODO: get user name from session and pass it to reqest body
-		print(gifts1)
+		request_copy = request.POST.copy()
+		request_copy.update({"username": request.user})
+		form = GiftsForm(request_copy)
+		gifts1 = []
 		if form.is_valid():
-			form.save()
+			temp_commit = form.save(commit=False)
+			temp_commit.username = request.user
+			temp_commit.save()
+			gifts1 = Gifts.objects.filter(username=request.user)
 		return render(request, 'gifts.html', {'form': GiftsForm(), 'gifts': gifts1})
 		
 class OtherUserGifts(View):
@@ -88,3 +82,10 @@ class OtherUserGifts(View):
 		user_gifts = Gifts.objects.filter(username=userObject[0])
 		print(user_gifts)
 		return render(request, 'othersgifts.html', {"username":username, "gifts": user_gifts}) # An empty list initially
+	
+
+class Logout(View):
+	def get(self, request):
+		logout(request)
+		return redirect("/")
+
