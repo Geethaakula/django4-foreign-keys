@@ -13,7 +13,7 @@ def authenticate(request, username, password):
     # get the user object based on user name
     user = list(MyUser.objects.filter(username=username))
     if(len(user) == 0):
-        return {"success": False,"message": "No such user"}
+        return {"success": False,"message": "No such username exists", "user": None}
     else:
         # check if username and password are matching
         #there is a user, so check for correct password
@@ -22,7 +22,7 @@ def authenticate(request, username, password):
             return {"success": True, "message": "Logged in successfully", "user": user[0]}
         else:
             #password is incorrect
-            return {"success": False,"error": "Password is incorrect", "user": None}
+            return {"success": False,"message": "Incorrect password", "user": None}
     
     
 # implement login

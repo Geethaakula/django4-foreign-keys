@@ -7,7 +7,10 @@
   <div class="d-flex p-4">
     <div class="col-12 col-lg-8 d-flex align-items-center ">
       <h1 class="d-block ml-4">
-        Welcome to Gifter!
+        Welcome  
+        {% if request.session.is_authenticated %}
+        back {{ request.session.username }},
+        {% endif %}to Gifter!
       </h1>
     </div>
     {% if not request.session.is_authenticated %}
@@ -15,12 +18,16 @@
       <h2 class="text-center">Login</h2>
       <form class="d-flex flex-column" action="/" method="post" class="mt-4">
         {% csrf_token %}  
-        <p style="text:red;">{{ error }}</p>
+        
         
         
           {{ form }}
           <button type="submit" class="btn btn-primary mt-4">Submit</button>
-          {{ errors }}
+          {% if not success %}
+            <p class="text-danger">** {{ message }}</p>
+          {% else %}
+            <p class="text-success">** {{ message }}</p>
+          {% endif %}
           <p class="text-center mt-2">
             Do not have an account? <a href="/register" style="display : above">Signup</a>
           </p>

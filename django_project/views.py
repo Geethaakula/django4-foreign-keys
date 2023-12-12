@@ -24,11 +24,11 @@ class Home(View):
 			if(user is not None):
 				request.session.set_expiry(300)
 				login(request, user)
-				return redirect("/users/")
+				return redirect("/gifts/")
 		else:
 			print("inside errors")
 		
-		return render(request,'index.html',{'form':form, "errors": "Username and password do not match"})
+		return render(request,'index.html',{'form':form, "success": response["success"], "message": response["message"]})
 		
 
 class Signup(View):
@@ -46,7 +46,7 @@ class Signup(View):
 			user = response["user"]
 			if(user is not None):
 				login(request, user)
-				return redirect('/')
+				return redirect('/gifts/')
 		else:
 			form = RegisterForm()
 		
@@ -102,4 +102,6 @@ class Logout(View):
 
 class Error(View):
 	def get(self, request):
+		# safely log other users out
+		logout(request)
 		return render(request, "error.html")
