@@ -9,7 +9,7 @@
 {% block title %}Gifts{% endblock %}
 
 {% block content %}
-    <h4 class="my-4">Gifts for current user ({{ user.username }})</h4>
+    <h4 class="my-4">Gifts for current user ({{ request.session.username }})</h4>
     <form class="d-flex align-items-center" method="post">
         {% csrf_token %}
         {{ form }}

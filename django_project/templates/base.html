@@ -35,14 +35,14 @@
             <div style="margin-left:auto;" class="navbar-nav">
               <a class="nav-link" aria-current="page" href="/">Home</a>
               <a class="nav-link" aria-current="page" href="/users/">Users</a>
-              {% if not user.is_authenticated %}
+              {% if not request.session.is_authenticated %}
                 <a class="nav-link" href="/register">Register</a>
               {% endif %}
               <a class="nav-link active" aria-current="page" href="/gifts">Gifts</a>
-              <a class="nav-link" type="submit" href="/logout"> 
-                {% if user.is_authenticated %}
-                (Not <b>{{ user.username }}</b>? ) 
-                {% endif %}Logout
+              {% if request.session.is_authenticated  %}
+                <a class="nav-link" type="submit" href="/logout"> 
+                (Not <b>{{ request.session.username }}</b>? ) Logout
+                {% endif %}
               </a>
             </div>
           </div>
